@@ -26,26 +26,29 @@ db.create_all()
 def index():
     if request.method =='POST':
         title_ = request.form['title']
-        desc = request.form['desc']
-        todo = Todo(title=title_,desc=desc)
+        #desc = request.form['desc']
+        #todo = Todo(title=title_,desc=desc)
+        todo = Todo(title=title_)
         db.session.add(todo)
         db.session.commit()
     allTODO = Todo.query.all()
-    todo_list = [{'id': todo.sno, 'title': todo.title, 'desc': todo.desc} for todo in allTODO]
+    #todo_list = [{'id': todo.sno, 'title': todo.title, 'desc': todo.desc} for todo in allTODO]
+    todo_list = [{'id': todo.sno, 'title': todo.title} for todo in allTODO]
     return jsonify(todo_list)
 
 @app.route('/update/<int:sno>',methods=["POST"])
 def update(sno):
     if request.method =='POST':
         title_upd = request.form['title']
-        desc_upd = request.form['desc']
+        #desc_upd = request.form['desc']
         todo = Todo.query.filter_by(sno=sno).first()
         todo.title = title_upd
-        todo.desc = desc_upd
+        #todo.desc = desc_upd
         db.session.add(todo)
         db.session.commit()
         allTODO = Todo.query.all()
-        todo_list = [{'id': todo.sno, 'title': todo.title, 'desc': todo.desc} for todo in allTODO]
+        #todo_list = [{'id': todo.sno, 'title': todo.title, 'desc': todo.desc} for todo in allTODO]
+        todo_list = [{'id': todo.sno, 'title': todo.title} for todo in allTODO]
         return jsonify(todo_list)
 
 @app.route('/delete/<int:sno>', methods=["DELETE"])
@@ -54,7 +57,8 @@ def delete(sno):
     db.session.delete(todo)
     db.session.commit()
     allTODO = Todo.query.all()
-    todo_list = [{'id': todo.sno, 'title': todo.title, 'desc': todo.desc} for todo in allTODO]
+    #todo_list = [{'id': todo.sno, 'title': todo.title, 'desc': todo.desc} for todo in allTODO]
+    todo_list = [{'id': todo.sno, 'title': todo.title} for todo in allTODO]
     return jsonify(todo_list)
 
 if __name__ == "__main__":
