@@ -1,8 +1,10 @@
 from flask import Flask, render_template,request,redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.app_context().push()
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todo.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -68,4 +70,4 @@ def delete(sno):
 
 
 if __name__ == "__main__":
-    app.run(debug=False, port=8000)
+    app.run(debug=False)
