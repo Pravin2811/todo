@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request,redirect, jsonify
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
@@ -32,8 +32,6 @@ def index():
         db.session.commit()
     allTODO = Todo.query.all()
     todo_list = [{'id': todo.sno, 'title': todo.title, 'desc': todo.desc} for todo in allTODO]
-    #print(todo_list)
-    #return render_template("index.html",allTODO=allTODO)
     return jsonify(todo_list)
 
 @app.route('/update/<int:sno>',methods=["POST"])
@@ -48,26 +46,16 @@ def update(sno):
         db.session.commit()
         allTODO = Todo.query.all()
         todo_list = [{'id': todo.sno, 'title': todo.title, 'desc': todo.desc} for todo in allTODO]
-        #print(todo_list)
         return jsonify(todo_list)
-        #return redirect("/")
-
-    #todo = Todo.query.filter_by(sno=sno).first()
-    #return render_template('update.html',todo=todo)
-
-
 
 @app.route('/delete/<int:sno>', methods=["DELETE"])
 def delete(sno):
     todo = Todo.query.filter_by(sno=sno).first()
     db.session.delete(todo)
     db.session.commit()
-    #return redirect('/')
     allTODO = Todo.query.all()
     todo_list = [{'id': todo.sno, 'title': todo.title, 'desc': todo.desc} for todo in allTODO]
-    #print(todo_list)
     return jsonify(todo_list)
-
 
 if __name__ == "__main__":
     app.run(debug=False)
